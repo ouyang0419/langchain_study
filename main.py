@@ -1,5 +1,6 @@
 import os
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from langserve import add_routes
 
 from api.routers import router
@@ -10,6 +11,20 @@ app = FastAPI(
     title="智能知识库助手",
     version="1.0",
     description="基于LangChain构建的RAG知识库系统，支持文档上传与智能问答"
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:5173",  # 🎯 Vue 开发服务器
+        "http://127.0.0.1:5173",
+        # 如果你用其他端口，比如 3000、8080，也加进来
+        # "http://localhost:3000",
+        "http://localhost:8080",
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],  # 允许所有方法（GET, POST, PUT, DELETE 等）
+    allow_headers=["*"],  # 允许所有头部
 )
 
 # 确保必要目录存在
